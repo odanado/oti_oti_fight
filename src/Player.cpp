@@ -4,10 +4,14 @@
  */
 
 #include <algorithm>
+#include <string>
 #include "Config.h"
 #include "Player.h"
 
 namespace oti_oti_fight {
+
+Player::Player(const std::string &name, int x, int y, int remainingPlayers)
+    : name(name), x(x), y(y), remainingPlayers(remainingPlayers) {}
 
 void Player::move(Player::Move act) {
     switch (act) {
