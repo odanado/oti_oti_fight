@@ -39,8 +39,8 @@ void Player::move(Player::Move act) {
 
 void Player::normalizePos(void) {
     x = std::max(0, x);
-    x = std::min(x, Config::BOARD_WIDTH);
+    x = std::min(x, Config::BOARD_WIDTH - 1);
     y = std::max(0, y);
-    y = std::min(y, Config::BOARD_HEIGHT);
+    y = std::min(y, Config::BOARD_HEIGHT - 1);
 }
 }  // namespace oti_oti_fight
