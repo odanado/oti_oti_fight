@@ -16,6 +16,10 @@ constexpr int BLOCK_HEIGHT = 8;
 
 constexpr int BOARD_WIDTH = SQUARE_WIDTH * BLOCK_WIDTH;
 constexpr int BOARD_HEIGHT = SQUARE_HEIGHT * BLOCK_HEIGHT;
+
+constexpr int FALL_UNTIL_TIME = 3000;
+constexpr int FALL_INCRESE_TIME = 500;
+constexpr int ENABLE_UNTIL_TIME = 5000;
 }  // namespace Config
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_CONFIG_H_
