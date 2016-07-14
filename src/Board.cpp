@@ -62,8 +62,10 @@ void Board::attack(int id, int x, int y, AttackDirection dir) {
 }
 
 void Board::attackImpl(int id, int x, int y, int dx, int dy) {
-    auto time =
-        std::chrono::system_clock::now() + millisec(Config::FALL_UNTIL_TIME);
+    using std::chrono::system_clock;
+    using std::chrono::duration_cast;
+
+    auto time = system_clock::now() + millisec(Config::FALL_UNTIL_TIME);
     while (0 <= x && x < Config::BOARD_WIDTH && 0 <= y &&
            y < Config::BOARD_HEIGHT) {
         if (board[y][x] == State::DISABLE) continue;
@@ -73,9 +75,7 @@ void Board::attackImpl(int id, int x, int y, int dx, int dy) {
         if (board[y][x] == State::ENABLE) {
             board[y][x] = State::UNSTABLE;
             unstableBoard[y][x] = std::make_tuple(
-                id,
-                std::chrono::duration_cast<millisec>(time.time_since_epoch())
-                    .count());
+                id, duration_cast<millisec>(time.time_since_epoch()).count());
         }
         if (x % 2 == 1 || y % 2 == 1)
             time += millisec(Config::FALL_INCRESE_TIME);
@@ -84,18 +84,21 @@ void Board::attackImpl(int id, int x, int y, int dx, int dy) {
     }
 }
 void Board::update() {
-    auto now = std::chrono::system_clock::now().time_since_epoch();
+    using std::chrono::system_clock;
+    using std::chrono::duration_cast;
+
+    auto now = system_clock::now().time_since_epoch();
     for (int y = 0; y < board.size(); y++) {
         for (int x = 0; x < board[y].size(); x++) {
             if (board[y][x] == State::DISABLE) {
                 auto time = millisec(disableBoard[y][x]);
-                if (time < std::chrono::duration_cast<millisec>(now)) {
+                if (time < duration_cast<millisec>(now)) {
                     board[y][x] = State::ENABLE;
                     disableBoard[y][x] = -1;
                 }
             } else if (board[y][x] == State::UNSTABLE) {
                 auto time = millisec(std::get<1>(unstableBoard[y][x]));
-                if (time < std::chrono::duration_cast<millisec>(now)) {
+                if (time < duration_cast<millisec>(now)) {
                     board[y][x] = State::DISABLE;
                     unstableBoard[y][x] = std::make_tuple(-1, -1);
                     disableBoard[y][x] =
