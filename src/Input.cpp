@@ -6,17 +6,13 @@
 #include <ncurses.h>
 #include <locale.h>
 
+#include "NCursesUtil.h"
 #include "Input.h"
 
 namespace oti_oti_fight {
 Input::Input() {
-    setlocale(LC_ALL, "");
-    initscr();
-    keypad(stdscr, TRUE);
-    crmode();
-    noecho();
-    curs_set(0);
-    timeout(0);
+    using NCursesUtil::init;
+    init();
 }
 
 void Input::operator()() {
