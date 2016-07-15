@@ -7,10 +7,12 @@
 #define INCLUDE_GAMEDATA_H_
 
 #include "Board.h"
+#include "Input.h"
 
 namespace oti_oti_fight {
 struct GameData {
     Board board;
+    Input input;
 };
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_GAMEDATA_H_
