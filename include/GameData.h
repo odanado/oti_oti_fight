@@ -13,6 +13,7 @@ namespace oti_oti_fight {
 struct GameData {
     Board board;
     Input input;
+    bool isSoroPlay = true;
 };
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_GAMEDATA_H_
