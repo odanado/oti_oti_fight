@@ -13,6 +13,7 @@
 #include <boost/optional.hpp>
 
 #include "SceneBase.h"
+#include "GameData.h"
 
 namespace oti_oti_fight {
 
@@ -114,6 +115,8 @@ class SceneManager {
     std::shared_ptr<Data> get() { return data; }
     State getState() { return currentState; }
 };
+
+using MyApp = SceneManager<std::string, GameData>;
 
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_SCENEMANAGER_H_
