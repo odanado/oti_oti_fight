@@ -22,6 +22,10 @@ void changeColor(Color color);
 // (x, y) の属するドットにcolorで点を打つ
 void drawDot(Color color, int x, int y);
 
+void clear();
+
+void refresh();
+
 }  // namespace NCursesUtil
 }  // namespace oti_oti_fight
 

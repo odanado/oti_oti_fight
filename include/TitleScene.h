@@ -6,8 +6,6 @@
 #ifndef INCLUDE_TITLESCENE_H_
 #define INCLUDE_TITLESCENE_H_
 
-#include <ncurses.h>
-
 #include "SceneManager.h"
 
 namespace oti_oti_fight {

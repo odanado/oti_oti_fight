@@ -49,5 +49,14 @@ void drawDot(Color color, int x, int y) {
     changeColor(color);
     mvprintw(y, x - x % 2, "  ");
 }
+
+void clear() {
+    ::clear();
+}
+
+void refresh() {
+    ::refresh();
+}
+
 }  // namespace NCursesUtil
 }  // namespace oti_oti_fight

@@ -20,6 +20,9 @@ void TitleScene::update() noexcept {
         data->isSoroPlay = true;
     }
     if (data->input.keyEnter.pressed) {
+        if (data->isSoroPlay)
+            changeScene("Game");
+        // else WIP
     }
 }
 
@@ -27,6 +30,8 @@ void TitleScene::draw() noexcept {
     using NCursesUtil::drawString;
     using NCursesUtil::getHeight;
     using NCursesUtil::getWidth;
+    using NCursesUtil::clear;
+    using NCursesUtil::refresh;
 
     int y = getHeight(), x = getWidth();
     auto getMaker = [](bool isSoroPlay) {
