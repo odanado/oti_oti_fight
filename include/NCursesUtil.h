@@ -28,7 +28,8 @@ enum struct Color {
     SUB_BLUE,
     SUB_MAGENTA,
     SUB_CYAN,
-    SUB_WHITE
+    SUB_WHITE,
+    SIZE = SUB_WHITE
 };
 
 void init();

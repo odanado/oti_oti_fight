@@ -23,7 +23,7 @@ void init() {
     noecho();
     curs_set(0);
     timeout(0);
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < static_cast<int>(Color::SIZE); i++) {
         init_pair(i + 1, COLOR_WHITE, i);
     }
 }
