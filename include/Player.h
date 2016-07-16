@@ -19,6 +19,7 @@ class Player {
     std::string getName(void) const { return name; }
     int getX(void) const { return x; }
     int getY(void) const { return y; }
+    Direction getDirection(void) const { return dir; }
     int getRemainingPlayers(void) { return remainingPlayers; }
     bool died(void) const { return remainingPlayers == 0; }
 
