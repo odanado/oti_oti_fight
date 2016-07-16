@@ -102,7 +102,9 @@ void Board::update() {
                     board[y][x] = State::DISABLE;
                     unstableBoard[y][x] = std::make_tuple(-1, -1);
                     disableBoard[y][x] =
-                        (now + millisec(Config::ENABLE_UNTIL_TIME)).count();
+                        duration_cast<millisec>(
+                            now + millisec(Config::ENABLE_UNTIL_TIME))
+                            .count();
                 }
             }
         }
