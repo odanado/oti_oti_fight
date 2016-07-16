@@ -10,34 +10,29 @@
 
 namespace oti_oti_fight {
 
-Player::Player(const std::string &name, int x, int y, int remainingPlayers)
-    : name(name), x(x), y(y), remainingPlayers(remainingPlayers) {}
+Player::Player(const std::string &name, int x, int y, Direction dir,
+               int remainingPlayers)
+    : name(name), x(x), y(y), dir(dir), remainingPlayers(remainingPlayers) {}
 
-void Player::move(Player::Move act) {
+void Player::move(Direction act) {
     switch (act) {
-        case Move::UP:
+        case Direction::UP:
             --y;
             break;
 
-        case Move::DOWN:
+        case Direction::DOWN:
             ++y;
             break;
 
-        case Move::LEFT:
+        case Direction::LEFT:
             --x;
             break;
 
-        case Move::RIGHT:
+        case Direction::RIGHT:
             ++x;
             break;
-
-        case Move::ATTACK:
-            // TODO(odanado): ato de zisso suru
-            break;
-
-        case Move::NONE:
-            break;
     }
+    dir = act;
     normalizePos();
 }
 
