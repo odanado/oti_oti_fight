@@ -8,6 +8,7 @@
 
 #include "SceneManager.h"
 #include "TitleScene.h"
+#include "GameScene.h"
 
 int main() {
     using std::chrono::system_clock;
@@ -16,6 +17,7 @@ int main() {
     oti_oti_fight::MyApp manager;
     auto gameData = manager.get();
     manager.add<oti_oti_fight::TitleScene>("Title");
+    manager.add<oti_oti_fight::GameScene>("Game");
 
     auto nextFrame = system_clock::now() + 16666us;
 
