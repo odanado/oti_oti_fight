@@ -22,6 +22,6 @@ void Input::operator()() {
     keyRight.pressed = ch == KEY_RIGHT;
     keyLeft.pressed = ch == KEY_LEFT;
     keyX.pressed = ch == 'x';
-    keyEnter.pressed = ch == KEY_ENTER;
+    keyEnter.pressed = ch == 10;
 }
 }  // namespace oti_oti_fight

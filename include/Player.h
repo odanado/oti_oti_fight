@@ -8,14 +8,13 @@
 
 #include <string>
 #include "Config.h"
+#include "Direction.h"
 
 namespace oti_oti_fight {
 class Player {
  public:
-    enum struct Move { UP, DOWN, LEFT, RIGHT, ATTACK, NONE };
-
     Player() = default;
-    Player(const std::string &name, int x, int y,
+    Player(const std::string &name, int x, int y, Direction dir,
            int remainingPlayers = Config::MAX_REMAINING_PLAYERS);
     std::string getName(void) const { return name; }
     int getX(void) const { return x; }
@@ -23,12 +22,14 @@ class Player {
     int getRemainingPlayers(void) { return remainingPlayers; }
     bool died(void) const { return remainingPlayers == 0; }
 
-    void move(Move);
+    void move(Direction);
+    void attack();
 
  private:
     void normalizePos(void);
     std::string name;
     int x, y;
+    Direction dir;
     int remainingPlayers;
 };
 }  // namespace oti_oti_fight
