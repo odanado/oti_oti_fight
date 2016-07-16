@@ -35,19 +35,19 @@ TEST_F(TestBoard, attackRight) {
         }
     };
     Board board;
-    board.attack(0, 6, 6, Board::AttackDirection::RIGHT);
+    board.attack(0, 6, 6, Direction::RIGHT);
     test(board);
 
     board = Board();
-    board.attack(0, 6, 7, Board::AttackDirection::RIGHT);
+    board.attack(0, 6, 7, Direction::RIGHT);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 6, Board::AttackDirection::RIGHT);
+    board.attack(0, 7, 6, Direction::RIGHT);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 7, Board::AttackDirection::RIGHT);
+    board.attack(0, 7, 7, Direction::RIGHT);
     test(board);
 }
 TEST_F(TestBoard, attackLeft) {
@@ -73,19 +73,19 @@ TEST_F(TestBoard, attackLeft) {
         }
     };
     Board board;
-    board.attack(0, 6, 6, Board::AttackDirection::LEFT);
+    board.attack(0, 6, 6, Direction::LEFT);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 6, Board::AttackDirection::LEFT);
+    board.attack(0, 7, 6, Direction::LEFT);
     test(board);
 
     board = Board();
-    board.attack(0, 6, 7, Board::AttackDirection::LEFT);
+    board.attack(0, 6, 7, Direction::LEFT);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 7, Board::AttackDirection::LEFT);
+    board.attack(0, 7, 7, Direction::LEFT);
     test(board);
 }
 TEST_F(TestBoard, attackUp) {
@@ -111,19 +111,19 @@ TEST_F(TestBoard, attackUp) {
         }
     };
     Board board;
-    board.attack(0, 6, 6, Board::AttackDirection::UP);
+    board.attack(0, 6, 6, Direction::UP);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 6, Board::AttackDirection::UP);
+    board.attack(0, 7, 6, Direction::UP);
     test(board);
 
     board = Board();
-    board.attack(0, 6, 7, Board::AttackDirection::UP);
+    board.attack(0, 6, 7, Direction::UP);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 7, Board::AttackDirection::UP);
+    board.attack(0, 7, 7, Direction::UP);
     test(board);
 }
 TEST_F(TestBoard, attackDown) {
@@ -149,25 +149,25 @@ TEST_F(TestBoard, attackDown) {
         }
     };
     Board board;
-    board.attack(0, 6, 6, Board::AttackDirection::DOWN);
+    board.attack(0, 6, 6, Direction::DOWN);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 6, Board::AttackDirection::DOWN);
+    board.attack(0, 7, 6, Direction::DOWN);
     test(board);
 
     board = Board();
-    board.attack(0, 6, 7, Board::AttackDirection::DOWN);
+    board.attack(0, 6, 7, Direction::DOWN);
     test(board);
 
     board = Board();
-    board.attack(0, 7, 7, Board::AttackDirection::DOWN);
+    board.attack(0, 7, 7, Direction::DOWN);
     test(board);
 }
 TEST_F(TestBoard, multiAttack) {
     Board board;
-    board.attack(0, 0, 0, Board::AttackDirection::RIGHT);
-    board.attack(1, 6, 6, Board::AttackDirection::UP);
+    board.attack(0, 0, 0, Direction::RIGHT);
+    board.attack(1, 6, 6, Direction::UP);
     for (int y = 0; y < Config::BOARD_HEIGHT; y++) {
         for (int x = 0; x < Config::BOARD_WIDTH; x++) {
             int v = x + y * Config::BOARD_HEIGHT;

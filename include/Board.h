@@ -10,7 +10,9 @@
 #include <tuple>
 #include <chrono>
 #include <cassert>
+
 #include "Config.h"
+#include "Direction.h"
 
 namespace oti_oti_fight {
 class Board {
@@ -23,7 +25,6 @@ class Board {
      * UNSTABLE: 落下対象になった状態
      */
     enum struct State { ENABLE, DISABLE, UNSTABLE };
-    enum struct AttackDirection { UP, DOWN, LEFT, RIGHT };
 
     Board();
 
@@ -35,7 +36,7 @@ class Board {
      * @y: 攻撃したマス目のy
      * @dir: 攻撃した方向
      */
-    void attack(int id, int x, int y, AttackDirection dir);
+    void attack(int id, int x, int y, Direction dir);
     void update();
 
     State getState(int x, int y) const {

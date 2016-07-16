@@ -18,35 +18,35 @@ Board::Board() {
     }
 }
 
-void Board::attack(int id, int x, int y, AttackDirection dir) {
+void Board::attack(int id, int x, int y, Direction dir) {
     assert(0 <= id && id < 4);
     assert(0 <= x && x < Config::BOARD_WIDTH);
     assert(0 <= y && y < Config::BOARD_HEIGHT);
     int dx, dy;
     switch (dir) {
-        case AttackDirection::UP:
+        case Direction::UP:
             dx = 0;
             dy = -1;
             y -= 1 + (y % 2 != 0);
             break;
-        case AttackDirection::DOWN:
+        case Direction::DOWN:
             dx = 0;
             dy = 1;
             y += 1 + (y % 2 == 0);
             break;
-        case AttackDirection::LEFT:
+        case Direction::LEFT:
             dx = -1;
             dy = 0;
             x -= 1 + (x % 2 != 0);
             break;
-        case AttackDirection::RIGHT:
+        case Direction::RIGHT:
             dx = 1;
             dy = 0;
             x += 1 + (x % 2 == 0);
             break;
     }
     attackImpl(id, x, y, dx, dy);
-    if (dir == AttackDirection::RIGHT || dir == AttackDirection::LEFT) {
+    if (dir == Direction::RIGHT || dir == Direction::LEFT) {
         if (y % 2 == 0) {
             attackImpl(id, x, y + 1, dx, dy);
         } else {
