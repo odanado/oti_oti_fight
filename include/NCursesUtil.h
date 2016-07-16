@@ -10,7 +10,26 @@
 
 namespace oti_oti_fight {
 namespace NCursesUtil {
-enum struct Color { BLACK = 1, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE };
+
+// SUB_ は減色？された色
+enum struct Color {
+    BLACK = 1,
+    RED,
+    GREEN,
+    YELLOW,
+    BLUE,
+    MAGENTA,
+    CYAN,
+    WHITE,
+    SUB_BLACK,
+    SUB_RED,
+    SUB_GREEN,
+    SUB_YELLOW,
+    SUB_BLUE,
+    SUB_MAGENTA,
+    SUB_CYAN,
+    SUB_WHITE
+};
 
 void init();
 void drawString(int x, int y, const std::string &str, Color = Color::BLACK);
