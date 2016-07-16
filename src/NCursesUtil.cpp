@@ -47,16 +47,12 @@ int getHeight() {
 void changeColor(Color color) { attron(COLOR_PAIR(static_cast<int>(color))); }
 void drawDot(Color color, int x, int y) {
     changeColor(color);
-    mvprintw(y, x - x % 2, "  ");
+    mvprintw(y, 2 * x, "  ");
 }
 
-void clear() {
-    ::clear();
-}
+void clear() { ::clear(); }
 
-void refresh() {
-    ::refresh();
-}
+void refresh() { ::refresh(); }
 
 }  // namespace NCursesUtil
 }  // namespace oti_oti_fight
