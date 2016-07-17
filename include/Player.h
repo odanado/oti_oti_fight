@@ -20,10 +20,10 @@ class Player {
     int getX(void) const { return x; }
     int getY(void) const { return y; }
     Direction getDirection(void) const { return dir; }
-    int getRemainingPlayers(void) { return remainingPlayers; }
+    int getRemainingPlayers(void) const { return remainingPlayers; }
     bool died(void) const { return remainingPlayers == 0; }
 
-    void move(Direction);
+    void move(Direction dir);
     void attack();
 
  private:
