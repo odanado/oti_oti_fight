@@ -69,8 +69,6 @@ void Board::attackImpl(int id, int x, int y, int dx, int dy,
     auto time = now + millisec(Config::FALL_UNTIL_TIME);
     while (0 <= x && x < Config::BOARD_WIDTH && 0 <= y &&
            y < Config::BOARD_HEIGHT) {
-        if (board[y][x] == State::DISABLE) continue;
-
         // 落下までの時間は上書きされないが，マスの色情報は更新される
         std::get<0>(unstableBoard[y][x]) = id;
         if (board[y][x] == State::ENABLE) {
