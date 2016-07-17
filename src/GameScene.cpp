@@ -30,6 +30,8 @@ void GameScene::update() noexcept {
     if (data->input.keyX.pressed) {
         board.attack(0, player.getX(), player.getY(), player.getDirection());
     }
+
+    board.update();
 }
 
 void GameScene::draw() noexcept {
@@ -42,13 +44,21 @@ void GameScene::draw() noexcept {
             int nx = (v & 0xf) >> 1;
             int ny = v >> 5;
 
-            if (board.getState(x, y) == Board::State::ENABLE) {
-                if ((nx + ny) % 2 == 0)
-                    drawCell(Color::GREEN, x, y);
-                else
-                    drawCell(Color::BLUE, x, y);
-            } else {
-                drawCell(Color::BLACK, x, y);
+            auto state = board.getState(x, y);
+            switch (state) {
+                case Board::State::ENABLE:
+                    if ((nx + ny) % 2 == 0)
+                        drawCell(Color::GREEN, x, y);
+                    else
+                        drawCell(Color::BLUE, x, y);
+
+                    break;
+                case Board::State::UNSTABLE:
+                    drawCell(Color::SUB_BLACK, x, y);
+                    break;
+                case Board::State::DISABLE:
+                    drawCell(Color::BLACK, x, y);
+                    break;
             }
         }
     }
