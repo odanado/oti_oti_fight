@@ -63,7 +63,8 @@ class Board {
     // 落下した時間
     BoardBase<std::int64_t> disableBoard;
 
-    void attackImpl(int id, int x, int y, int dx, int dy);
+    void attackImpl(int id, int x, int y, int dx, int dy,
+                    const std::chrono::system_clock::time_point &now);
 };
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_BOARD_H_

@@ -45,27 +45,28 @@ void Board::attack(int id, int x, int y, Direction dir) {
             x += 1 + (x % 2 == 0);
             break;
     }
-    attackImpl(id, x, y, dx, dy);
+    auto now = std::chrono::system_clock::now();
+    attackImpl(id, x, y, dx, dy, now);
     if (dir == Direction::RIGHT || dir == Direction::LEFT) {
         if (y % 2 == 0) {
-            attackImpl(id, x, y + 1, dx, dy);
+            attackImpl(id, x, y + 1, dx, dy, now);
         } else {
-            attackImpl(id, x, y - 1, dx, dy);
+            attackImpl(id, x, y - 1, dx, dy, now);
         }
     } else {
         if (x % 2 == 0) {
-            attackImpl(id, x + 1, y, dx, dy);
+            attackImpl(id, x + 1, y, dx, dy, now);
         } else {
-            attackImpl(id, x - 1, y, dx, dy);
+            attackImpl(id, x - 1, y, dx, dy, now);
         }
     }
 }
 
-void Board::attackImpl(int id, int x, int y, int dx, int dy) {
-    using std::chrono::system_clock;
+void Board::attackImpl(int id, int x, int y, int dx, int dy,
+                       const std::chrono::system_clock::time_point &now) {
     using std::chrono::duration_cast;
 
-    auto time = system_clock::now() + millisec(Config::FALL_UNTIL_TIME);
+    auto time = now + millisec(Config::FALL_UNTIL_TIME);
     while (0 <= x && x < Config::BOARD_WIDTH && 0 <= y &&
            y < Config::BOARD_HEIGHT) {
         if (board[y][x] == State::DISABLE) continue;
@@ -77,7 +78,7 @@ void Board::attackImpl(int id, int x, int y, int dx, int dy) {
             unstableBoard[y][x] = std::make_tuple(
                 id, duration_cast<millisec>(time.time_since_epoch()).count());
         }
-        if (x % 2 == 1 || y % 2 == 1)
+        if ((dx && x % 2 == 1) || (dy && y % 2 == 1))
             time += millisec(Config::FALL_INCRESE_TIME);
         x += dx;
         y += dy;
