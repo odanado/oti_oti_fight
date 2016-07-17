@@ -8,10 +8,10 @@
 
 #include <array>
 #include <tuple>
-#include <chrono>
 #include <cassert>
 
 #include "Config.h"
+#include "Timer.h"
 #include "Direction.h"
 
 namespace oti_oti_fight {
@@ -69,7 +69,7 @@ class Board {
     BoardBase<std::int64_t> disableBoard;
 
     void attackImpl(int id, int x, int y, int dx, int dy,
-                    const std::chrono::system_clock::time_point &now);
+                    const Timer::milliseconds &now);
 };
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_BOARD_H_

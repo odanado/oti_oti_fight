@@ -6,6 +6,7 @@
 #include <chrono>
 #include <thread>
 
+#include "Timer.h"
 #include "SceneManager.h"
 #include "TitleScene.h"
 #include "GameScene.h"
@@ -24,6 +25,7 @@ int main() {
     while (1) {
         gameData->input();
         manager.update();
+        oti_oti_fight::Timer::update();
         auto nowFrame = system_clock::now();
         if (nowFrame < nextFrame) {
             manager.draw();
