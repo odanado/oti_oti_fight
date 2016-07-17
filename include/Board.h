@@ -51,6 +51,11 @@ class Board {
         return std::get<0>(unstableBoard[y][x]);
     }
 
+    bool valid(int x, int y) const {
+        return 0 <= x && x < Config::BOARD_WIDTH && 0 <= y &&
+               y < Config::BOARD_HEIGHT && getState(x, y) != State::DISABLE;
+    }
+
  private:
     using millisec = std::chrono::milliseconds;
     template <class T>

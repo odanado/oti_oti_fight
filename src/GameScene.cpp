@@ -15,16 +15,18 @@ void GameScene::init() noexcept {
 }
 
 void GameScene::update() noexcept {
-    if (data->input.keyUp.pressed) {
+    int x = player.getX();
+    int y = player.getY();
+    if (data->input.keyUp.pressed && board.valid(x, y - 1)) {
         player.move(Direction::UP);
     }
-    if (data->input.keyDown.pressed) {
+    if (data->input.keyDown.pressed && board.valid(x, y + 1)) {
         player.move(Direction::DOWN);
     }
-    if (data->input.keyLeft.pressed) {
+    if (data->input.keyLeft.pressed && board.valid(x - 1, y)) {
         player.move(Direction::LEFT);
     }
-    if (data->input.keyRight.pressed) {
+    if (data->input.keyRight.pressed && board.valid(x + 1, y)) {
         player.move(Direction::RIGHT);
     }
     if (data->input.keyX.pressed) {
