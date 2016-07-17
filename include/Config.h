@@ -4,6 +4,9 @@
  */
 #ifndef INCLUDE_CONFIG_H_
 #define INCLUDE_CONFIG_H_
+
+#include "Timer.h"
+
 namespace oti_oti_fight {
 namespace Config {
 constexpr int MAX_REMAINING_PLAYERS = 5;
@@ -20,6 +23,9 @@ constexpr int BOARD_HEIGHT = SQUARE_HEIGHT * BLOCK_HEIGHT;
 constexpr int FALL_UNTIL_TIME = 3000;
 constexpr int FALL_INCRESE_TIME = 500;
 constexpr int ENABLE_UNTIL_TIME = 5000;
+
+// 復活するまでの時間
+constexpr auto TIME_UNTIL_REBORN = Timer::milliseconds(3000);
 }  // namespace Config
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_CONFIG_H_

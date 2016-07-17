@@ -17,6 +17,13 @@ void GameScene::init() noexcept {
 void GameScene::update() noexcept {
     int x = player.getX();
     int y = player.getY();
+    if (player.died()) {
+        board.update();
+        return;
+    }
+    if (!board.valid(x, y)) {
+        player.fall();
+    }
     if (data->input.keyUp.pressed && board.valid(x, y - 1)) {
         player.move(Direction::UP);
     }
@@ -64,7 +71,11 @@ void GameScene::draw() noexcept {
             }
         }
     }
-    drawPlayer(Color::RED, player.getX(), player.getY());
+    if (player.died()) {
+        drawPlayer(Color::YELLOW, player.getX(), player.getY());
+    } else {
+        drawPlayer(Color::RED, player.getX(), player.getY());
+    }
     refresh();
 }
 

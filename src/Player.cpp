@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <string>
+#include <chrono>
 #include "Config.h"
 #include "Player.h"
 
@@ -12,7 +13,12 @@ namespace oti_oti_fight {
 
 Player::Player(const std::string &name, int x, int y, Direction dir,
                int remainingPlayers)
-    : name(name), x(x), y(y), dir(dir), remainingPlayers(remainingPlayers) {}
+    : name(name),
+      x(x),
+      y(y),
+      dir(dir),
+      remainingPlayers(remainingPlayers),
+      nextRebornTime(Timer::now<millisec>()) {}
 
 void Player::move(Direction act) {
     switch (act) {

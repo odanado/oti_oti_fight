@@ -7,6 +7,7 @@
 #define INCLUDE_PLAYER_H_
 
 #include <string>
+#include "Timer.h"
 #include "Config.h"
 #include "Direction.h"
 
@@ -21,17 +22,27 @@ class Player {
     int getY(void) const { return y; }
     Direction getDirection(void) const { return dir; }
     int getRemainingPlayers(void) const { return remainingPlayers; }
-    bool died(void) const { return remainingPlayers == 0; }
+    bool died(void) const {
+        return Timer::now<millisec>() < nextRebornTime ||
+               remainingPlayers == 0;
+    }
 
     void move(Direction dir);
     void attack();
+    void fall() {
+        --remainingPlayers;
+        nextRebornTime = Timer::now<millisec>() + Config::TIME_UNTIL_REBORN;
+    }
 
  private:
+    using millisec = Timer::microseconds;
     void normalizePos(void);
+
     std::string name;
     int x, y;
     Direction dir;
     int remainingPlayers;
+    millisec nextRebornTime;
 };
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_PLAYER_H_
