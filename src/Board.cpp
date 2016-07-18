@@ -45,7 +45,7 @@ void Board::attack(int id, int x, int y, Direction dir) {
             x += 1 + (x % 2 == 0);
             break;
     }
-    auto now = std::chrono::system_clock::now();
+    auto now = Timer::now<Timer::milliseconds>();
     attackImpl(id, x, y, dx, dy, now);
     if (dir == Direction::RIGHT || dir == Direction::LEFT) {
         if (y % 2 == 0) {
@@ -63,7 +63,7 @@ void Board::attack(int id, int x, int y, Direction dir) {
 }
 
 void Board::attackImpl(int id, int x, int y, int dx, int dy,
-                       const std::chrono::system_clock::time_point &now) {
+                       const Timer::milliseconds &now) {
     using std::chrono::duration_cast;
 
     auto time = now + millisec(Config::FALL_UNTIL_TIME);
@@ -73,8 +73,7 @@ void Board::attackImpl(int id, int x, int y, int dx, int dy,
         std::get<0>(unstableBoard[y][x]) = id;
         if (board[y][x] == State::ENABLE) {
             board[y][x] = State::UNSTABLE;
-            unstableBoard[y][x] = std::make_tuple(
-                id, duration_cast<millisec>(time.time_since_epoch()).count());
+            unstableBoard[y][x] = std::make_tuple(id, time.count());
         }
         if ((dx && x % 2 == 1) || (dy && y % 2 == 1))
             time += millisec(Config::FALL_INCRESE_TIME);

@@ -15,21 +15,32 @@ void GameScene::init() noexcept {
 }
 
 void GameScene::update() noexcept {
-    if (data->input.keyUp.pressed) {
+    int x = player.getX();
+    int y = player.getY();
+    if (player.died()) {
+        board.update();
+        return;
+    }
+    if (!board.valid(x, y)) {
+        player.fall();
+    }
+    if (data->input.keyUp.pressed && board.valid(x, y - 1)) {
         player.move(Direction::UP);
     }
-    if (data->input.keyDown.pressed) {
+    if (data->input.keyDown.pressed && board.valid(x, y + 1)) {
         player.move(Direction::DOWN);
     }
-    if (data->input.keyLeft.pressed) {
+    if (data->input.keyLeft.pressed && board.valid(x - 1, y)) {
         player.move(Direction::LEFT);
     }
-    if (data->input.keyRight.pressed) {
+    if (data->input.keyRight.pressed && board.valid(x + 1, y)) {
         player.move(Direction::RIGHT);
     }
     if (data->input.keyX.pressed) {
         board.attack(0, player.getX(), player.getY(), player.getDirection());
     }
+
+    board.update();
 }
 
 void GameScene::draw() noexcept {
@@ -42,17 +53,29 @@ void GameScene::draw() noexcept {
             int nx = (v & 0xf) >> 1;
             int ny = v >> 5;
 
-            if (board.getState(x, y) == Board::State::ENABLE) {
-                if ((nx + ny) % 2 == 0)
-                    drawCell(Color::GREEN, x, y);
-                else
-                    drawCell(Color::BLUE, x, y);
-            } else {
-                drawCell(Color::BLACK, x, y);
+            auto state = board.getState(x, y);
+            switch (state) {
+                case Board::State::ENABLE:
+                    if ((nx + ny) % 2 == 0)
+                        drawCell(Color::GREEN, x, y);
+                    else
+                        drawCell(Color::BLUE, x, y);
+
+                    break;
+                case Board::State::UNSTABLE:
+                    drawCell(Color::SUB_BLACK, x, y);
+                    break;
+                case Board::State::DISABLE:
+                    drawCell(Color::BLACK, x, y);
+                    break;
             }
         }
     }
-    drawPlayer(Color::RED, player.getX(), player.getY());
+    if (player.died()) {
+        drawPlayer(Color::YELLOW, player.getX(), player.getY());
+    } else {
+        drawPlayer(Color::RED, player.getX(), player.getY());
+    }
     refresh();
 }
 
