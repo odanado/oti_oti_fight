@@ -6,6 +6,8 @@
 #include <vector>
 
 #include "Server.h"
+#include "NCursesUtil.h"
+
 namespace oti_oti_fight {
 Server::Server(asio::io_service *ioService, int port)
     : socket_(*ioService, udp::endpoint(udp::v4(), port)), id(0) {
@@ -25,11 +27,11 @@ void Server::handleReceive(const boost::system::error_code &error,
     std::vector<std::string> recvData;
     boost::split(recvData, msg, boost::is_space());
     if (recvData.front() == "join") {
-        if (id != 4) {
+        if (id != 1) {
             joinEndpoint.emplace_back(remoteEndpoint);
             id++;
             sendOK(remoteEndpoint, id);
-            if (id == 4) {
+            if (id == 1) {
                 sendStart();
             }
         }

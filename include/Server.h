@@ -3,6 +3,7 @@
  * Licensed under the MIT License.
  */
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <boost/array.hpp>
@@ -13,6 +14,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "Timer.h"
+#include "NCursesUtil.h"
 
 #ifndef INCLUDE_SERVER_H_
 #define INCLUDE_SERVER_H_
@@ -41,7 +43,12 @@ class Server {
     void sendStart() {
         auto time =
             Timer::now<Timer::milliseconds>() + Timer::milliseconds(1000);
-        broadcast("start " + std::to_string(time.count()));
+        std::string msg = "start ";
+        msg += std::to_string(time.count()) + " ";
+        msg += std::to_string(id) + std::string(" ");
+        msg += "1 6 ";
+        msg += "1 6";
+        broadcast(msg);
     }
 
     void broadcast(const std::string& msg) {
