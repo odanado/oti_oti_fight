@@ -34,6 +34,7 @@ enum struct Color {
 
 void init();
 void drawString(int x, int y, const std::string &str, Color = Color::BLACK);
+void debug(const std::string &msg);
 int getWidth();
 int getHeight();
 

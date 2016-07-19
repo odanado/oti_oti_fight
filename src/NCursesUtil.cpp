@@ -32,6 +32,12 @@ void drawString(int x, int y, const std::string &str, Color color) {
     mvprintw(y, x - str.size() / 2, "%s", str.c_str());
 }
 
+void debug(const std::string &msg) {
+    static int y = 35;
+    drawString(10, y++, msg);
+    if (y == 43) y = 35;
+}
+
 int getWidth() {
     int y, x;
     getmaxyx(stdscr, y, x);
