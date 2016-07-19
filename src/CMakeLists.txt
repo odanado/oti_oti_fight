@@ -3,7 +3,7 @@ set(PROJECT_NAME_STR oti_oti_fight)
 project(${PROJECT_NAME_STR} C CXX)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_definitions(-Wall -ansi -Wno-deprecated -std=c++14)
+    add_definitions(-Wall -ansi -Wno-deprecated -std=c++14 -O0 -g)
 endif()
 
 set(COMMON_INCLUDES ${PROJECT_SOURCE_DIR}/include)
