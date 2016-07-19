@@ -4,6 +4,7 @@
  */
 #include <string>
 #include <vector>
+#include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/array.hpp>
@@ -11,11 +12,14 @@
 #include <boost/algorithm/string.hpp>
 
 #include "Client.h"
+#include "NCursesUtil.h"
 #include "GameScene.h"
 
 namespace oti_oti_fight {
 Client::Client(asio::io_service *ioService) : socket_(*ioService) {
     socket_.open(udp::v4());
+    remoteEndpoint =
+        udp::endpoint(asio::ip::address::from_string("127.0.0.1"), 50000);
     startReceive();
 }
 
@@ -36,12 +40,20 @@ void Client::handleReceive(const boost::system::error_code &error,
         id = std::stoi(recvData[1].c_str());
     } else if (recvData.front() == "start") {
         auto time = std::stoll(recvData[1]);
-        // gameScene->start(time);
+        auto num = std::stoi(recvData[2]);
+        std::vector<int> xs, ys;
+        for (int i = 0; i < num; i++) {
+            xs.push_back(std::stoi(recvData[i + 3]));
+            ys.push_back(std::stoi(recvData[i + num + 3]));
+        }
+
+        gameScene->start(Timer::milliseconds(time), xs, ys);
     } else if (recvData.front() == "move") {
         auto id = std::stoi(recvData[1]);
         auto act = recvData[2];
-        // gameScene->move(id, act);
+        gameScene->move(id, act);
     }
+    startReceive();
 }
 
 void Client::send(const udp::endpoint &endpoint, const std::string &msg) {
