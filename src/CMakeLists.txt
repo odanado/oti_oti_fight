@@ -16,4 +16,5 @@ add_library(${PROJECT_LIB_NAME} ${SRC_FILES})
 
 add_executable(${PROJECT_NAME_STR} ${PROJECT_SOURCE_DIR}/src/main.cpp)
 target_link_libraries(${PROJECT_NAME_STR} ncurses)
+target_link_libraries(${PROJECT_NAME_STR} boost_system)
 target_link_libraries(${PROJECT_NAME_STR} ${PROJECT_LIB_NAME})
