@@ -2,42 +2,62 @@
  * Copyright (C) 2016 odanado
  * Licensed under the MIT License.
  */
+#include <string>
+#include <vector>
+#include <thread>
+#include <iostream>
+#include <boost/asio.hpp>
+
 #include "GameScene.h"
 #include "NCursesUtil.h"
 #include "Config.h"
+#include "Server.h"
 
 namespace oti_oti_fight {
 void GameScene::init() noexcept {
     using NCursesUtil::clear;
     clear();
-    // TODO(odan): 乱数で初期の向きを決めるようにする
-    player = Player("test", 0, 0, Direction::RIGHT);
+    serverThread = std::thread([&]() { startServer(); });
+    std::this_thread::sleep_for(Timer::milliseconds(500));
+    clientThread = std::thread([&]() { startClient(); });
+    std::this_thread::sleep_for(Timer::milliseconds(500));
+    client->join();
+}
+
+void GameScene::startServer() {
+    boost::asio::io_service ioService;
+    auto server = Server(&ioService, 50000);
+    ioService.run();
+}
+
+void GameScene::startClient() {
+    boost::asio::io_service ioService;
+    client = std::make_unique<Client>(&ioService);
+    ioService.run();
 }
 
 void GameScene::update() noexcept {
-    int x = player.getX();
-    int y = player.getY();
-    if (player.died()) {
-        board.update();
-        return;
+    for (auto &player : players) {
+        int x = player.getX();
+        int y = player.getY();
+        if (!board.valid(x, y)) {
+            player.fall();
+        }
     }
-    if (!board.valid(x, y)) {
-        player.fall();
+    if (data->input.keyUp.pressed) {
+        client->move(id, "up");
     }
-    if (data->input.keyUp.pressed && board.valid(x, y - 1)) {
-        player.move(Direction::UP);
+    if (data->input.keyDown.pressed) {
+        client->move(id, "down");
     }
-    if (data->input.keyDown.pressed && board.valid(x, y + 1)) {
-        player.move(Direction::DOWN);
+    if (data->input.keyLeft.pressed) {
+        client->move(id, "left");
     }
-    if (data->input.keyLeft.pressed && board.valid(x - 1, y)) {
-        player.move(Direction::LEFT);
-    }
-    if (data->input.keyRight.pressed && board.valid(x + 1, y)) {
-        player.move(Direction::RIGHT);
+    if (data->input.keyRight.pressed) {
+        client->move(id, "right");
     }
     if (data->input.keyX.pressed) {
-        board.attack(0, player.getX(), player.getY(), player.getDirection());
+        client->move(id, "attack");
     }
 
     board.update();
@@ -71,12 +91,41 @@ void GameScene::draw() noexcept {
             }
         }
     }
-    if (player.died()) {
-        drawPlayer(Color::YELLOW, player.getX(), player.getY());
-    } else {
-        drawPlayer(Color::RED, player.getX(), player.getY());
+    for (const auto &player : players) {
+        if (player.died()) {
+            drawPlayer(Color::YELLOW, player.getX(), player.getY());
+        } else {
+            drawPlayer(Color::RED, player.getX(), player.getY());
+        }
     }
     refresh();
+}
+
+void GameScene::start(const Timer::milliseconds &time,
+                      const std::vector<int> &xs, const std::vector<int> &ys) {
+    NCursesUtil::debug(std::to_string(xs.size()));
+    players = std::vector<Player>(xs.size());
+    for (int i = 0; i < players.size(); i++) {
+        players.emplace_back("test", xs[i], ys[i], Direction::RIGHT);
+    }
+}
+void GameScene::move(int id, const std::string &act) {
+    if (act == "attack") {
+        board.attack(0, players[id].getX(), players[id].getY(),
+                     players[id].getDirection());
+    } else {
+        Direction dir;
+        if (act == "up") dir = Direction::UP;
+        if (act == "down") dir = Direction::DOWN;
+        if (act == "right") dir = Direction::RIGHT;
+        if (act == "left") dir = Direction::LEFT;
+        players[id].move(dir);
+    }
+}
+
+void GameScene::ok(int id) {
+    std::cerr << __LINE__ << std::endl;
+    this->id = id;
 }
 
 void GameScene::drawCell(NCursesUtil::Color color, int x, int y) {
