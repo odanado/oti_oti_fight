@@ -142,11 +142,7 @@ void GameScene::draw() noexcept {
                               Color::CYAN};
     for (int i = 0; i < players.size(); i++) {
         auto &player = players[i];
-        int remainingPlayers = player.getRemainingPlayers();
-        if (player.died() && remainingPlayers > 0) {
-            drawPlayer(Color::SUB_BLACK, player.getX(), player.getY(),
-                       player.getDirection());
-        } else if (remainingPlayers > 0) {
+        if (!player.died()) {
             drawPlayer(colors[i], player.getX(), player.getY(),
                        player.getDirection());
         }
