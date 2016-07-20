@@ -15,7 +15,6 @@ namespace oti_oti_fight {
 void GameScene::init() noexcept {
     using NCursesUtil::clear;
     clear();
-    // TODO(odan): 乱数で初期の向きを決めるようにする
     players.resize(Config::PLAYERS);
     for (int i = 0; i < Config::PLAYERS; i++) {
         std::uniform_int_distribution<> distY(0, Config::BOARD_HEIGHT - 1);
