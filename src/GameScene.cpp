@@ -130,14 +130,17 @@ void GameScene::draw() noexcept {
                               Color::CYAN};
     for (int i = 0; i < players.size(); i++) {
         auto &player = players[i];
-        if (player.died()) {
+        int remainingPlayers = player.getRemainingPlayers();
+        if (player.died() && remainingPlayers > 0) {
             drawPlayer(Color::SUB_BLACK, player.getX(), player.getY(),
                        player.getDirection());
-        } else {
+        } else if (remainingPlayers > 0) {
             drawPlayer(colors[i], player.getX(), player.getY(),
                        player.getDirection());
         }
+        drawPlayerInfo(i);
     }
+
     refresh();
 }
 
@@ -193,5 +196,12 @@ void GameScene::drawPlayer(NCursesUtil::Color color, int x, int y,
                        CELL_LENGTH * y + OFFSET_Y + 1);
             break;
     }
+}
+void GameScene::drawPlayerInfo(int idx) {
+    using NCursesUtil::drawString;
+    auto name = players[idx].getName();
+    int remainingPlayers = players[idx].getRemainingPlayers();
+    drawString(2 * CELL_LENGTH * Config::BOARD_WIDTH + 10, 10 + idx * 10,
+               name + ": " + std::to_string(remainingPlayers));
 }
 }  // namespace oti_oti_fight

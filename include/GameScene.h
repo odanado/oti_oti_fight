@@ -32,6 +32,7 @@ class GameScene : public MyApp::Scene {
 
     void drawCell(NCursesUtil::Color color, int x, int y);
     void drawPlayer(NCursesUtil::Color color, int x, int y, Direction dir);
+    void drawPlayerInfo(int idx);
 
     std::string getHumanAction(void);
     std::string getAIAction(void);
