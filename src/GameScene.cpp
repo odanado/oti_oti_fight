@@ -33,7 +33,11 @@ void GameScene::update() noexcept {
         int x = player.getX();
         int y = player.getY();
         if (!board.valid(x, y)) {
+            std::tie(x, y) = getEnablePos();
             player.fall();
+            player.setX(x);
+            player.setY(y);
+            continue;
         }
         std::string act;
         if (i == 0) {
