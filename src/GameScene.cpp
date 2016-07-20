@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <tuple>
 
 #include "GameScene.h"
 #include "NCursesUtil.h"
@@ -17,12 +18,11 @@ void GameScene::init() noexcept {
     clear();
     players.resize(Config::PLAYERS);
     for (int i = 0; i < Config::PLAYERS; i++) {
-        std::uniform_int_distribution<> distY(0, Config::BOARD_HEIGHT - 1);
-        std::uniform_int_distribution<> distX(0, Config::BOARD_WIDTH - 1);
+        int x, y;
+        std::tie(x, y) = getEnablePos();
         std::uniform_int_distribution<> dist(0, 3);
         auto dir = static_cast<Direction>(dist(engine));
-        players[i] = Player("player" + std::to_string(i), distX(engine),
-                            distY(engine), dir);
+        players[i] = Player("player" + std::to_string(i), x, y, dir);
     }
 }
 
@@ -92,6 +92,19 @@ std::string GameScene::getAIAction() {
     }
     std::uniform_int_distribution<> dist(0, acts.size() - 1);
     return acts[dist(engine)];
+}
+
+std::tuple<int, int> GameScene::getEnablePos() {
+    std::vector<std::tuple<int, int>> pos;
+    for (int x = 0; x < Config::BOARD_WIDTH; x++) {
+        for (int y = 0; y < Config::BOARD_HEIGHT; y++) {
+            if (board.getState(x, y) == Board::State::ENABLE) {
+                pos.emplace_back(x, y);
+            }
+        }
+    }
+    std::shuffle(pos.begin(), pos.end(), engine);
+    return pos.front();
 }
 
 void GameScene::draw() noexcept {

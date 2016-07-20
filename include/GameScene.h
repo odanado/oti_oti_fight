@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include <tuple>
 #include <random>
 
 #include "SceneManager.h"
@@ -36,6 +37,7 @@ class GameScene : public MyApp::Scene {
 
     std::string getHumanAction(void);
     std::string getAIAction(void);
+    std::tuple<int, int> getEnablePos();
 };
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_GAMESCENE_H_
