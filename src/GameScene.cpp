@@ -72,9 +72,11 @@ void GameScene::draw() noexcept {
         }
     }
     if (player.died()) {
-        drawPlayer(Color::YELLOW, player.getX(), player.getY());
+        drawPlayer(Color::YELLOW, player.getX(), player.getY(),
+                   player.getDirection());
     } else {
-        drawPlayer(Color::RED, player.getX(), player.getY());
+        drawPlayer(Color::RED, player.getX(), player.getY(),
+                   player.getDirection());
     }
     refresh();
 }
@@ -92,16 +94,44 @@ void GameScene::drawCell(NCursesUtil::Color color, int x, int y) {
     }
 }
 
-void GameScene::drawPlayer(NCursesUtil::Color color, int x, int y) {
+void GameScene::drawPlayer(NCursesUtil::Color color, int x, int y,
+                           Direction dir) {
     using NCursesUtil::drawDot;
+    using NCursesUtil::drawCursor;
+    using NCursesUtil::Color;
     assert(0 <= x && x < Config::BOARD_WIDTH);
     assert(0 <= y && y < Config::BOARD_HEIGHT);
+
     for (int dx = 0; dx < CELL_LENGTH; dx++) {
         for (int dy = 0; dy < CELL_LENGTH; dy++) {
             int nx = CELL_LENGTH * x + OFFSET_X + dx;
             int ny = CELL_LENGTH * y + OFFSET_Y + dy;
             drawDot(color, nx, ny);
         }
+    }
+    switch (dir) {
+        case Direction::UP:
+            drawCursor(Color::BLACK, 2 * (CELL_LENGTH * x + OFFSET_X) + 2,
+                       CELL_LENGTH * y + OFFSET_Y);
+            drawCursor(Color::BLACK, 2 * (CELL_LENGTH * x + OFFSET_X) + 3,
+                       CELL_LENGTH * y + OFFSET_Y);
+
+            break;
+        case Direction::DOWN:
+            drawCursor(Color::BLACK, 2 * (CELL_LENGTH * x + OFFSET_X) + 2,
+                       CELL_LENGTH * y + OFFSET_Y + 2);
+            drawCursor(Color::BLACK, 2 * (CELL_LENGTH * x + OFFSET_X) + 3,
+                       CELL_LENGTH * y + OFFSET_Y + 2);
+            break;
+        case Direction::LEFT:
+            drawCursor(Color::BLACK, 2 * (CELL_LENGTH * x + OFFSET_X),
+                       CELL_LENGTH * y + OFFSET_Y + 1);
+            break;
+        case Direction::RIGHT:
+            drawCursor(Color::BLACK,
+                       2 * (CELL_LENGTH * x + OFFSET_X) + 2 * CELL_LENGTH - 1,
+                       CELL_LENGTH * y + OFFSET_Y + 1);
+            break;
     }
 }
 }  // namespace oti_oti_fight
