@@ -115,7 +115,10 @@ void GameScene::draw() noexcept {
 
                     break;
                 case Board::State::UNSTABLE:
-                    drawCell(Color::SUB_BLACK, x, y);
+                    if ((nx + ny) % 2 == 0)
+                        drawCell(Color::SUB_GREEN, x, y);
+                    else
+                        drawCell(Color::SUB_BLUE, x, y);
                     break;
                 case Board::State::DISABLE:
                     drawCell(Color::BLACK, x, y);
@@ -123,13 +126,15 @@ void GameScene::draw() noexcept {
             }
         }
     }
+    std::vector<Color> colors{Color::RED, Color::YELLOW, Color::MAGENTA,
+                              Color::CYAN};
     for (int i = 0; i < players.size(); i++) {
         auto &player = players[i];
         if (player.died()) {
-            drawPlayer(Color::YELLOW, player.getX(), player.getY(),
+            drawPlayer(Color::SUB_BLACK, player.getX(), player.getY(),
                        player.getDirection());
         } else {
-            drawPlayer(Color::RED, player.getX(), player.getY(),
+            drawPlayer(colors[i], player.getX(), player.getY(),
                        player.getDirection());
         }
     }
