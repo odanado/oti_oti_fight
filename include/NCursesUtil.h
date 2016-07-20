@@ -42,6 +42,8 @@ void changeColor(Color color);
 // (x, y) の属するドットにcolorで点を打つ
 void drawDot(Color color, int x, int y);
 
+void drawCursor(Color color, int x, int y);
+
 void clear();
 
 void refresh();

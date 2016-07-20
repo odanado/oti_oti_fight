@@ -46,8 +46,13 @@ int getHeight() {
 
 void changeColor(Color color) { attron(COLOR_PAIR(static_cast<int>(color))); }
 void drawDot(Color color, int x, int y) {
+    drawCursor(color, 2 * x, y);
+    drawCursor(color, 2 * x + 1, y);
+}
+
+void drawCursor(Color color, int x, int y) {
     changeColor(color);
-    mvprintw(y, 2 * x, "  ");
+    mvprintw(y, x, " ");
 }
 
 void clear() { ::clear(); }
