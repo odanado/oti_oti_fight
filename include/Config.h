@@ -24,6 +24,8 @@ constexpr int FALL_UNTIL_TIME = 3000;
 constexpr int FALL_INCRESE_TIME = 500;
 constexpr int ENABLE_UNTIL_TIME = 5000;
 
+constexpr int PLAYERS = 4;
+
 // 復活するまでの時間
 constexpr auto TIME_UNTIL_REBORN = Timer::milliseconds(3000);
 }  // namespace Config

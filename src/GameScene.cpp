@@ -2,6 +2,11 @@
  * Copyright (C) 2016 odanado
  * Licensed under the MIT License.
  */
+
+#include <string>
+#include <vector>
+#include <random>
+
 #include "GameScene.h"
 #include "NCursesUtil.h"
 #include "Config.h"
@@ -11,36 +16,83 @@ void GameScene::init() noexcept {
     using NCursesUtil::clear;
     clear();
     // TODO(odan): 乱数で初期の向きを決めるようにする
-    player = Player("test", 0, 0, Direction::RIGHT);
+    players.resize(Config::PLAYERS);
+    for (int i = 0; i < Config::PLAYERS; i++) {
+        std::uniform_int_distribution<> distY(0, Config::BOARD_HEIGHT - 1);
+        std::uniform_int_distribution<> distX(0, Config::BOARD_WIDTH - 1);
+        std::uniform_int_distribution<> dist(0, 3);
+        auto dir = static_cast<Direction>(dist(engine));
+        players[i] = Player("player" + std::to_string(i), distX(engine),
+                            distY(engine), dir);
+    }
 }
 
 void GameScene::update() noexcept {
-    int x = player.getX();
-    int y = player.getY();
-    if (player.died()) {
-        board.update();
-        return;
+    for (int i = 0; i < players.size(); i++) {
+        auto &player = players[i];
+        if (player.died()) continue;
+        int x = player.getX();
+        int y = player.getY();
+        if (!board.valid(x, y)) {
+            player.fall();
+        }
+        std::string act;
+        if (i == 0) {
+            act = getHumanAction();
+        } else {
+            act = getAIAction();
+        }
+        if (act == "attack") {
+            board.attack(i, player.getX(), player.getY(),
+                         player.getDirection());
+        }
+        auto valid = [&](int x, int y) {
+            return board.valid(x, y) &&
+                   board.getState(x, y) != Board::State::DISABLE;
+        };
+        if (act == "up" && valid(x, y - 1)) {
+            player.move(Direction::UP);
+        }
+        if (act == "down" && valid(x, y + 1)) {
+            player.move(Direction::DOWN);
+        }
+        if (act == "left" && valid(x - 1, y)) {
+            player.move(Direction::LEFT);
+        }
+        if (act == "right" && valid(x + 1, y)) {
+            player.move(Direction::RIGHT);
+        }
     }
-    if (!board.valid(x, y)) {
-        player.fall();
+    board.update();
+}
+
+std::string GameScene::getHumanAction() {
+    if (data->input.keyUp.pressed) {
+        return "up";
     }
-    if (data->input.keyUp.pressed && board.valid(x, y - 1)) {
-        player.move(Direction::UP);
+    if (data->input.keyDown.pressed) {
+        return "down";
     }
-    if (data->input.keyDown.pressed && board.valid(x, y + 1)) {
-        player.move(Direction::DOWN);
+    if (data->input.keyLeft.pressed) {
+        return "left";
     }
-    if (data->input.keyLeft.pressed && board.valid(x - 1, y)) {
-        player.move(Direction::LEFT);
-    }
-    if (data->input.keyRight.pressed && board.valid(x + 1, y)) {
-        player.move(Direction::RIGHT);
+    if (data->input.keyRight.pressed) {
+        return "right";
     }
     if (data->input.keyX.pressed) {
-        board.attack(0, player.getX(), player.getY(), player.getDirection());
+        return "attack";
     }
+    return "none";
+}
 
-    board.update();
+std::string GameScene::getAIAction() {
+    auto acts =
+        std::vector<std::string>{"up", "down", "left", "right", "attack"};
+    for (int i = 0; i < 50; i++) {
+        acts.emplace_back("none");
+    }
+    std::uniform_int_distribution<> dist(0, acts.size() - 1);
+    return acts[dist(engine)];
 }
 
 void GameScene::draw() noexcept {
@@ -71,12 +123,15 @@ void GameScene::draw() noexcept {
             }
         }
     }
-    if (player.died()) {
-        drawPlayer(Color::YELLOW, player.getX(), player.getY(),
-                   player.getDirection());
-    } else {
-        drawPlayer(Color::RED, player.getX(), player.getY(),
-                   player.getDirection());
+    for (int i = 0; i < players.size(); i++) {
+        auto &player = players[i];
+        if (player.died()) {
+            drawPlayer(Color::YELLOW, player.getX(), player.getY(),
+                       player.getDirection());
+        } else {
+            drawPlayer(Color::RED, player.getX(), player.getY(),
+                       player.getDirection());
+        }
     }
     refresh();
 }
