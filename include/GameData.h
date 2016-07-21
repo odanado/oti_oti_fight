@@ -17,6 +17,7 @@ struct GameData {
     Board board;
     Input input;
     std::vector<std::string> rank;
+    std::vector<std::string> log;
     bool isSoroPlay = true;
     bool isFinish;
 };

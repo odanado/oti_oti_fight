@@ -5,14 +5,25 @@
 
 #include <string>
 #include <algorithm>
+#include <cstdio>
 
 #include "ResultScene.h"
 #include "NCursesUtil.h"
+#include "Timer.h"
 
 namespace oti_oti_fight {
 using NCursesUtil::clear;
 using NCursesUtil::drawString;
-void ResultScene::init() noexcept { clear(); }
+void ResultScene::init() noexcept {
+    clear();
+    auto now = Timer::now<Timer::milliseconds>();
+    std::string fileName = "log/" + std::to_string(now.count()) + ".txt";
+    FILE* fp = fopen(fileName.c_str(), "w");
+    for (int i = 0; i < data->log.size(); i++) {
+        fprintf(fp, "%s\n", data->log[i].c_str());
+    }
+    fclose(fp);
+}
 void ResultScene::update() noexcept {}
 void ResultScene::draw() noexcept {
     auto rank = data->rank;

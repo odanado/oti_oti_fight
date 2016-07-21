@@ -18,6 +18,7 @@ void GameScene::init() noexcept {
     using NCursesUtil::clear;
     clear();
     data->rank.clear();
+    data->log.resize(Config::PLAYERS);
     players.resize(Config::PLAYERS);
     for (int i = 0; i < Config::PLAYERS; i++) {
         int x, y;
@@ -65,6 +66,7 @@ void GameScene::update() noexcept {
         if (act == "attack") {
             board.attack(i, player.getX(), player.getY(),
                          player.getDirection());
+            data->log[i] += "A";
         }
         auto valid = [&](int x, int y) {
             return board.valid(x, y) &&
@@ -72,15 +74,21 @@ void GameScene::update() noexcept {
         };
         if (act == "up" && valid(x, y - 1)) {
             player.move(Direction::UP);
+            data->log[i] += "U";
         }
         if (act == "down" && valid(x, y + 1)) {
             player.move(Direction::DOWN);
+            data->log[i] += "D";
         }
         if (act == "left" && valid(x - 1, y)) {
             player.move(Direction::LEFT);
+            data->log[i] += "L";
         }
         if (act == "right" && valid(x + 1, y)) {
             player.move(Direction::RIGHT);
+            data->log[i] += "R";
+        } else {
+            data->log[i] += "N";
         }
     }
     board.update();
