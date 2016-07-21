@@ -10,7 +10,13 @@
 #include "NCursesUtil.h"
 
 namespace oti_oti_fight {
-void TitleScene::init() noexcept {}
+using NCursesUtil::drawString;
+using NCursesUtil::getHeight;
+using NCursesUtil::getWidth;
+using NCursesUtil::clear;
+using NCursesUtil::refresh;
+
+void TitleScene::init() noexcept { data->isFinish = false; }
 
 void TitleScene::update() noexcept {
     if (data->input.keyDown.pressed) {
@@ -20,32 +26,29 @@ void TitleScene::update() noexcept {
         data->isSoroPlay = true;
     }
     if (data->input.keyEnter.pressed) {
-        if (data->isSoroPlay)
+        if (data->isSoroPlay) {
             changeScene("Game");
-        // else WIP
+        } else {
+            data->isFinish = true;
+            clear();
+        }
     }
 }
 
 void TitleScene::draw() noexcept {
-    using NCursesUtil::drawString;
-    using NCursesUtil::getHeight;
-    using NCursesUtil::getWidth;
-    using NCursesUtil::clear;
-    using NCursesUtil::refresh;
-
     int y = getHeight(), x = getWidth();
-    auto getMaker = [](bool isSoroPlay) {
-        return isSoroPlay ? std::string("> ") : std::string("  ");
+    auto getMaker = [](bool marker) {
+        return marker ? std::string("> ") : std::string("  ");
     };
     bool isSoroPlay = data->isSoroPlay;
     std::string title = "おちおちファイト";
     std::string soroPlay = "ひとりで遊ぶ";
-    std::string multiPlay = "みんなで遊ぶ";
+    std::string exit = "終わる";
     clear();
 
     drawString(x / 2, y / 2 - 10, title);
     drawString(x / 2, y / 2 + 5, getMaker(isSoroPlay) + soroPlay);
-    drawString(x / 2, y / 2 + 7, getMaker(!isSoroPlay) + multiPlay);
+    drawString(x / 2, y / 2 + 7, getMaker(!isSoroPlay) + exit);
 
     refresh();
 }
