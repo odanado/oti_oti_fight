@@ -35,6 +35,7 @@ class GameScene : public MyApp::Scene {
     void drawPlayer(NCursesUtil::Color color, int x, int y, Direction dir);
     void drawPlayerInfo(int idx);
 
+    bool isFinish(void);
     std::string getHumanAction(void);
     std::string getAIAction(void);
     std::tuple<int, int> getEnablePos();

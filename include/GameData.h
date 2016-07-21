@@ -6,6 +6,9 @@
 #ifndef INCLUDE_GAMEDATA_H_
 #define INCLUDE_GAMEDATA_H_
 
+#include <vector>
+#include <string>
+
 #include "Board.h"
 #include "Input.h"
 
@@ -13,6 +16,7 @@ namespace oti_oti_fight {
 struct GameData {
     Board board;
     Input input;
+    std::vector<std::string> rank;
     bool isSoroPlay = true;
 };
 }  // namespace oti_oti_fight

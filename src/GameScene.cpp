@@ -7,6 +7,7 @@
 #include <vector>
 #include <random>
 #include <tuple>
+#include <algorithm>
 
 #include "GameScene.h"
 #include "NCursesUtil.h"
@@ -16,6 +17,7 @@ namespace oti_oti_fight {
 void GameScene::init() noexcept {
     using NCursesUtil::clear;
     clear();
+    data->rank.clear();
     players.resize(Config::PLAYERS);
     for (int i = 0; i < Config::PLAYERS; i++) {
         int x, y;
@@ -27,16 +29,31 @@ void GameScene::init() noexcept {
 }
 
 void GameScene::update() noexcept {
+    if (isFinish()) {
+        for (const auto &player : players) {
+            if (player.getRemainingPlayers() != 0) {
+                std::string str = std::to_string(1) + ": " + player.getName();
+                data->rank.emplace_back(str);
+            }
+        }
+        changeScene("Result");
+    }
     for (int i = 0; i < players.size(); i++) {
         auto &player = players[i];
         if (player.died()) continue;
         int x = player.getX();
         int y = player.getY();
         if (!board.valid(x, y)) {
-            std::tie(x, y) = getEnablePos();
             player.fall();
-            player.setX(x);
-            player.setY(y);
+            if (player.getRemainingPlayers() == 0) {
+                int r = players.size() - data->rank.size();
+                std::string str = std::to_string(r) + ": " + player.getName();
+                data->rank.emplace_back(str);
+            } else {
+                std::tie(x, y) = getEnablePos();
+                player.setX(x);
+                player.setY(y);
+            }
             continue;
         }
         std::string act;
@@ -109,6 +126,13 @@ std::tuple<int, int> GameScene::getEnablePos() {
     }
     std::shuffle(pos.begin(), pos.end(), engine);
     return pos.front();
+}
+
+bool GameScene::isFinish() {
+    int cnt = std::count_if(
+        players.begin(), players.end(),
+        [](const Player &player) { return player.getRemainingPlayers() == 0; });
+    return cnt >= 3;
 }
 
 void GameScene::draw() noexcept {
