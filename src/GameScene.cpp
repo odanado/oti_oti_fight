@@ -67,28 +67,42 @@ void GameScene::update() noexcept {
             board.attack(i, player.getX(), player.getY(),
                          player.getDirection());
             data->log[i] += "A";
+            continue;
+        }
+        if (act == "none") {
+            data->log[i] += "N";
+            continue;
         }
         auto valid = [&](int x, int y) {
             return board.valid(x, y) &&
                    board.getState(x, y) != Board::State::DISABLE;
         };
-        if (act == "up" && valid(x, y - 1)) {
-            player.move(Direction::UP);
+        Direction dir;
+        int dx = 0, dy = 0;
+        if (act == "up") {
+            dy = -1;
+            dir = Direction::UP;
             data->log[i] += "U";
         }
-        if (act == "down" && valid(x, y + 1)) {
-            player.move(Direction::DOWN);
+        if (act == "down") {
+            dy = 1;
+            dir = Direction::DOWN;
             data->log[i] += "D";
         }
-        if (act == "left" && valid(x - 1, y)) {
-            player.move(Direction::LEFT);
+        if (act == "left") {
+            dx = -1;
+            dir = Direction::LEFT;
             data->log[i] += "L";
         }
-        if (act == "right" && valid(x + 1, y)) {
-            player.move(Direction::RIGHT);
+        if (act == "right") {
+            dx = 1;
+            dir = Direction::RIGHT;
             data->log[i] += "R";
-        } else {
-            data->log[i] += "N";
+        }
+
+        player.setDirection(dir);
+        if (valid(x + dx, y + dy)) {
+            player.move(dir);
         }
     }
     board.update();

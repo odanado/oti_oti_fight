@@ -19,6 +19,7 @@ class Player {
            int remainingPlayers = Config::MAX_REMAINING_PLAYERS);
     void setX(int x) { this->x = x; }
     void setY(int y) { this->y = y; }
+    void setDirection(Direction dir) { this->dir = dir; }
     std::string getName(void) const { return name; }
     int getX(void) const { return x; }
     int getY(void) const { return y; }
