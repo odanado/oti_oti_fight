@@ -43,7 +43,7 @@ void TitleScene::draw() noexcept {
     bool isSoroPlay = data->isSoroPlay;
     std::string title = "おちおちファイト";
     std::string soroPlay = "ひとりで遊ぶ";
-    std::string exit = "終わる";
+    std::string exit = "終了する  ";
     clear();
 
     drawString(x / 2, y / 2 - 10, title);

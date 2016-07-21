@@ -161,6 +161,11 @@ void GameScene::draw() noexcept {
     using NCursesUtil::refresh;
     using NCursesUtil::Color;
 
+    auto colors = std::vector<Color>{Color::DARK_RED,     Color::SUB_RED,
+                                     Color::DARK_YELLOW,  Color::SUB_YELLOW,
+                                     Color::DARK_MAGENTA, Color::SUB_MAGENTA,
+                                     Color::DARK_BLUE,    Color::SUB_BLUE};
+
     for (int x = 0; x < Config::BOARD_WIDTH; x++) {
         for (int y = 0; y < Config::BOARD_HEIGHT; y++) {
             int v = x + y * Config::BOARD_HEIGHT;
@@ -168,19 +173,20 @@ void GameScene::draw() noexcept {
             int ny = v >> 5;
 
             auto state = board.getState(x, y);
+            int id = board.getAttackedId(x, y);
             switch (state) {
                 case Board::State::ENABLE:
                     if ((nx + ny) % 2 == 0)
                         drawCell(Color::GREEN, x, y);
                     else
-                        drawCell(Color::BLUE, x, y);
+                        drawCell(Color::SUB_GREEN, x, y);
 
                     break;
                 case Board::State::UNSTABLE:
                     if ((nx + ny) % 2 == 0)
-                        drawCell(Color::SUB_GREEN, x, y);
+                        drawCell(colors[id * 2], x, y);
                     else
-                        drawCell(Color::SUB_BLUE, x, y);
+                        drawCell(colors[id * 2 + 1], x, y);
                     break;
                 case Board::State::DISABLE:
                     drawCell(Color::BLACK, x, y);
@@ -188,8 +194,8 @@ void GameScene::draw() noexcept {
             }
         }
     }
-    std::vector<Color> colors{Color::RED, Color::YELLOW, Color::MAGENTA,
-                              Color::CYAN};
+    colors = std::vector<Color>{Color::RED, Color::YELLOW, Color::MAGENTA,
+                                Color::CYAN};
     for (int i = 0; i < players.size(); i++) {
         auto &player = players[i];
         if (!player.died()) {

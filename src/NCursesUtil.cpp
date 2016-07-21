@@ -13,6 +13,10 @@
 
 namespace oti_oti_fight {
 namespace NCursesUtil {
+void init_color(Color color) {
+    int c = static_cast<int>(color);
+    init_pair(c + 1, COLOR_WHITE, c);
+}
 void init() {
     setenv("TERM", "xterm-256color", 1);
     setlocale(LC_ALL, "");
@@ -26,7 +30,12 @@ void init() {
     for (int i = 0; i < static_cast<int>(Color::SIZE); i++) {
         init_pair(i + 1, COLOR_WHITE, i);
     }
+    init_color(Color::DARK_RED);
+    init_color(Color::DARK_YELLOW);
+    init_color(Color::DARK_MAGENTA);
+    init_color(Color::DARK_BLUE);
 }
+
 void drawString(int x, int y, const std::string &str, Color color) {
     changeColor(color);
     mvprintw(y, x - str.size() / 2, "%s", str.c_str());
