@@ -25,6 +25,7 @@ int main() {
     auto nextFrame = system_clock::now() + 16666us;
 
     while (1) {
+        if (gameData->isFinish) break;
         gameData->input();
         manager.update();
         oti_oti_fight::Timer::update();

@@ -18,6 +18,7 @@ struct GameData {
     Input input;
     std::vector<std::string> rank;
     bool isSoroPlay = true;
+    bool isFinish;
 };
 }  // namespace oti_oti_fight
 #endif  // INCLUDE_GAMEDATA_H_
