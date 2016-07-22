@@ -15,7 +15,7 @@ namespace oti_oti_fight {
 namespace NCursesUtil {
 void init_color(Color color) {
     int c = static_cast<int>(color);
-    init_pair(c + 1, COLOR_WHITE, c);
+    init_pair(c, COLOR_WHITE, c);
 }
 void init() {
     setenv("TERM", "xterm-256color", 1);
