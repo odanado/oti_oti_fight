@@ -27,6 +27,9 @@ void init() {
     noecho();
     curs_set(0);
     timeout(0);
+#ifdef __linux__
+    system("resize -s 55 170");
+#endif
     for (int i = 0; i < static_cast<int>(Color::SIZE); i++) {
         init_pair(i + 1, COLOR_WHITE, i);
     }
